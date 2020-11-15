@@ -100,6 +100,9 @@ function weekShift(dayOfWeek, firstDayOfWeek) {
 }
 
 function refresh() {
+	if (typeof Cookies.get("googleAuthToken") === "undefined" && firebase.auth().currentUser !== null) {
+		launchAuth(firebase.auth().currentUser.email);
+	}
 	document.getElementById("refresh-button").classList.add("is-loading");
 	document.getElementById("refresh-button").disabled = true;
 	assignmentsView();

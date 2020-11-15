@@ -11,9 +11,6 @@ const updateTimeLimit = dueTimeLimit*2;
 function fetchAssignments() {
 	return new Promise((resolve, reject) => {
 		// Fetch all active courses
-		if (typeof Cookies.get("googleAuthToken") === "undefined") {
-			launchAuth(true);
-		}
 		fetch('https://classroom.googleapis.com/v1/courses?studentId=me&courseStates=ACTIVE&pageSize=100', {
 			headers: {
 				Authorization: "Bearer " + Cookies.get("googleAuthToken")
