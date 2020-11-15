@@ -88,11 +88,11 @@ function safe(strings, ...inputs) {
 }
 
 function formatDueDate(date) {
-	return safe`${date.toLocaleString(window.navigator.language, {weekday: 'long'})} ${date.getDate()}.${date.getMonth()+1} ${date.getHours()}:${date.getMinutes()}`
+	return safe`${date.toLocaleString(window.navigator.language, {weekday: 'long'})} ${date.getDate()}.${date.getMonth()+1}. ${date.getHours()}:${date.getMinutes().toString().padStart(2,"0")}`
 }
 
 function formatDueDateDate(date) {
-	return safe`${date.toLocaleString(window.navigator.language, {weekday: 'long'})} ${date.getDate()}.${date.getMonth()+1}`;
+	return safe`${date.toLocaleString(window.navigator.language, {weekday: 'long'})} ${date.getDate()}.${date.getMonth()+1}.`;
 }
 
 function weekShift(dayOfWeek, firstDayOfWeek) {
