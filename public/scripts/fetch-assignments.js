@@ -8,16 +8,6 @@ const dueTimeLimit = 2*7*24*60*60*1000;
 const updateTimeLimit = dueTimeLimit*2;
 
 
-function displayAssignments() {
-	fetchAssignments().then(() => {
-		dueAssignments.forEach(e => {
-			const div = document.createElement("div");
-			div.innerText = e.assignment.title;
-			document.getElementById("assignments").append(div);
-		})
-	})
-}
-
 function fetchAssignments() {
 	return new Promise((resolve, reject) => {
 		// Fetch all active courses
@@ -71,6 +61,9 @@ function fetchAssignments() {
 }
 
 function dueDateToDate(dueDate = {}, dueTime = {}) {
+	if (typeof dueDate.year === "undefined") {
+		return new Date(0);
+	}
 	return new Date(zeropad`${dueDate.year || 0}-${dueDate.month || 0}-${dueDate.day || 0}T${dueTime.hours || 0}:${dueTime.minutes || 0}:${dueTime.seconds || 0}Z`);
 }
 

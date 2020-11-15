@@ -67,3 +67,10 @@ node_modules/
 
 # PhpStorm folder
 .idea/
+
+
+# Some testing data I don't want public.
+public/scripts/test-data.js
+
+# Generated styles
+public/styles/style.css

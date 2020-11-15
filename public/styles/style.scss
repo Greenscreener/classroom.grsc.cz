@@ -1,0 +1,118 @@
+@charset "utf-8";
+
+// Overwrite some Bulma styling
+$primary: #22a565;
+
+// Import Bulma
+@import "bulma/bulma.sass";
+
+
+.homapage-logo {
+	box-shadow: black 0 0 0 5px;
+}
+
+.hidden {
+	display: none !important;
+}
+
+
+
+#loading {
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	background-color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	&:after {
+		box-sizing: border-box;
+		content: "";
+		width: 5em;
+		height: 5em;
+		border: rgba(0,0,0,.05) 5px solid;
+		border-top-color: rgba(0,0,0,.2);
+		border-radius: 50%;
+		animation: spin 1s infinite cubic-bezier(.61,.1,.46,.85);
+	}
+}
+@keyframes spin {
+	0% {transform: rotate(0)}
+	100% {transform: rotate(360deg)}
+}
+
+.topbar {
+	padding: .7em;
+	border-bottom: solid 1px $grey-lighter;
+	display: flex;
+	justify-content: space-between;
+	.topbar-left {
+		text-align: left;
+	}
+	.topbar-right {
+		text-align: right;
+	}
+}
+
+#profile-icon {
+	background-color: white;
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	vertical-align: middle;
+	border-radius: 50%;
+	img {
+		border-radius: 50%;
+	}
+}
+
+
+#assignments .assignment-box {
+	transition: background-color .4s;
+	&:not(.week-start):hover {
+		background-color: $grey-lighter;
+		cursor: pointer;
+	}
+	&.is-missing {
+		a {
+			color: darkred !important;
+		}
+		color: darkred;
+	}
+	a {
+		color: $text !important;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	.level-left, .level-right {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	.assignment-title {
+		font-size: 1.2em;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 50vw;
+	}
+	border-bottom: solid 1px grey;
+	padding: 7px;
+}
+
+#profile-name {
+	padding: 0 7px;
+}
+
+.footer-logo {
+	vertical-align: middle;
+	transition: transform .2s;
+	&:hover {
+		transform: scale(1.1);
+	}
+}
+
+.button {
+	font-weight: initial;
+	background-color: $grey-lighter;
+}

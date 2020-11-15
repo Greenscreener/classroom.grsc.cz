@@ -1,0 +1,3 @@
+[submodule "public/styles/bulma"]
+	path = public/styles/bulma
+	url = https://github.com/jgthms/bulma.git
