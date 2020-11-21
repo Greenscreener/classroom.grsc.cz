@@ -3,7 +3,7 @@ const firstDayOfWeek = 1;
 function displayAssignments() {
 	const assignmentsDiv = document.getElementById("assignments");
 	assignmentsDiv.innerHTML = "";
-	const sortedAssignments = dueAssignments.sort((a, b) => {
+	dueAssignments.sort((a, b) => {
 		const dateA = dueDateToDate(a.assignment.dueDate, a.assignment.dueTime);
 		const dateB = dueDateToDate(b.assignment.dueDate, b.assignment.dueTime);
 		return dateA-dateB;
@@ -11,7 +11,12 @@ function displayAssignments() {
 	for (let i = 0; i < dueAssignments.length; i++) {
 		const e = dueAssignments[i];
 		const dueDate = dueDateToDate(e.assignment.dueDate,e.assignment.dueTime);
-		if (i === 0 || weekShift(dueDate.getDay(),1) < weekShift(dueDateToDate(dueAssignments[i-1].assignment.dueDate,dueAssignments[i-1].assignment.dueTime).getDay(),1) || (dueDateToDate(dueAssignments[i-1].assignment.dueDate,dueAssignments[i-1].assignment.dueTime) < new Date() && dueDate > new Date())) {
+		if (
+			i === 0 ||
+			(dueDate > new Date() && weekShift(dueDate.getDay(),1) < weekShift(dueDateToDate(dueAssignments[i-1].assignment.dueDate,dueAssignments[i-1].assignment.dueTime).getDay(),1)) ||
+			(dueDateToDate(dueAssignments[i-1].assignment.dueDate,dueAssignments[i-1].assignment.dueTime).getTime() === 0 && dueDate.getTime() !== 0)  ||
+			(dueDateToDate(dueAssignments[i-1].assignment.dueDate,dueAssignments[i-1].assignment.dueTime) < new Date() && dueDate > new Date())
+		) {
 			const box = document.createElement("div");
 			box.classList.add("assignment-box");
 			box.classList.add("week-start");
