@@ -1,6 +1,18 @@
 const firstDayOfWeek = 1;
 
 function displayAssignments() {
+	const courseLinksDiv = document.getElementById("course-links");
+	courseLinksDiv.innerHTML = "";
+	for (let i = 0; i < courses.length; i++) {
+		const courseLink = document.createElement("a");
+		courseLink.classList.add("course-link");
+		courseLink.href = courses[i].alternateLink;
+		courseLink.target = "_blank";
+		courseLink.innerText = courses[i].name;
+		courseLink.style.backgroundColor = courseColor(courses[i]);
+		courseLinksDiv.appendChild(courseLink);
+	}
+
 	const assignmentsDiv = document.getElementById("assignments");
 	assignmentsDiv.innerHTML = "";
 	dueAssignments.sort((a, b) => {
@@ -114,6 +126,28 @@ function refresh() {
 }
 
 function courseColor(course) {
-	const colorHash = new ColorHash({saturation: .8, lightness: .4});
-	return colorHash.hex(course.id + course.name);
+	const colors = [
+		"#C62828",
+		"#AD1457",
+		"#6A1B9A",
+		"#4527A0",
+		"#283593",
+		"#1565C0",
+		"#0277BD",
+		"#00838F",
+		"#00695C",
+		"#2E7D32",
+		"#558B2F",
+		"#827717",
+		"#F57F17",
+		"#FF6F00",
+		"#E65100",
+		"#D84315",
+		"#4E342E",
+		"#616161",
+		"#37474F",
+		"#000000"
+	]
+	return colors[parseInt(sha1(course.id + course.name).slice(5,12), 16) % colors.length];
 }
+

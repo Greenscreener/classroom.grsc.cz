@@ -47,11 +47,16 @@ $primary: #22a565;
 	display: flex;
 	justify-content: space-between;
 	.topbar-left {
+		display: flex;
 		text-align: left;
 	}
 	.topbar-right {
 		text-align: right;
 	}
+}
+.topbar-logo {
+	vertical-align: center;
+	margin-right: 5px;
 }
 
 #profile-icon {
@@ -122,4 +127,22 @@ $primary: #22a565;
 .button {
 	font-weight: initial;
 	background-color: $grey-lighter;
+}
+
+#course-links {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	.course-link {
+		margin: 7px;
+		padding: 3px 6px;
+		background-color: green;
+		color: white;
+		border-radius: 3px;
+		font-size: 1.2em;
+		&:hover {
+			filter: brightness(.85);
+		}
+	}
 }

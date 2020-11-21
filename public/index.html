@@ -9,7 +9,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/async/3.2.0/async.min.js" integrity="sha512-6K6+H87tLdCWvY5ml9ZQXLRlPlDEt8uXmtELhuJRgFyEDv6JvndWHg3jadJuBVGPEhhA2AAt+ROMC2V7EvTIWw==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-hash/1.0.3/color-hash.js" integrity="sha512-d2gBmnRdI/y0YhwdNA/vqcijeBCBNgk5pZOtJdTjFSBT1hCH+qYTJg02Dw0TXT1UCG72N7NWyxqSF88d5jrwwQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha1/0.6.0/sha1.min.js" integrity="sha512-q6FuE4ifzTygTD/ug8CFnAFXl+i1zXqBWP6flRAuSWjaXrFu4Cznk8Xr+VrWMyi7fSatbssh7ufobAetvXK8Pg==" crossorigin="anonymous"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-auth.js"></script>
@@ -67,6 +67,7 @@
     <div id="app" class="hidden">
       <nav class="topbar">
         <div class="topbar-left">
+          <img class="topbar-logo" src="/img/logo.svg" width="32" alt="">
           <h1 class="subtitle is-4">Greenscreener's Classroom</h1>
         </div>
         <div class="topbar-right">
@@ -85,6 +86,11 @@
       <script>
         document.addEventListener("DOMContentLoaded", () => document.getElementById("days-since-made").innerText = Math.round((Date.now() - 1605462530215)/(1000*60*60*24)).toString())
       </script>
+        <div class="container">
+          <div id="course-links">
+
+          </div>
+        </div>
       <section class="section">
         <div class="container">
           <button id="refresh-button" class="button" onclick="refresh()">Refresh</button>
