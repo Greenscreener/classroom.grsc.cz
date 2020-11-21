@@ -36,7 +36,7 @@ function displayAssignments() {
 				box.classList.add("is-missing");
 			}
 			box.innerHTML = `
-				<span>${dueDate.getTime() ? (dueDate > new Date() ? formatDueDateDate(dueDate) : "Missing") : "No due date"}</span>
+				<span>${dueDate.getTime() ? (dueDate > new Date() ? weekHeader(dueDate, firstDayOfWeek) : "Missing") : "No due date"}</span>
 			`
 			assignmentsDiv.append(box);
 		}
@@ -114,6 +114,12 @@ function formatDueDateDate(date) {
 
 function weekShift(dayOfWeek, firstDayOfWeek) {
 	return dayOfWeek-firstDayOfWeek < 0 ? 7+(dayOfWeek-firstDayOfWeek) : dayOfWeek-firstDayOfWeek;
+}
+
+function weekHeader(date, firstDayOfWeek) {
+	const firstDayDate = new Date(date.getTime() - weekShift(date.getDay(), firstDayOfWeek)*24*60*60*1000);
+	const lastDayDate = new Date(date.getTime() + (6-weekShift(date.getDay(),firstDayOfWeek))*24*60*60*1000);
+	return formatDueDateDate(firstDayDate) + " – " + formatDueDateDate(lastDayDate);
 }
 
 function refresh() {
