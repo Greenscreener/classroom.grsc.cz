@@ -26,7 +26,6 @@ function displayAssignments() {
 			box.innerHTML = `
 				<span>${dueDate.getTime() ? (dueDate > new Date() ? formatDueDateDate(dueDate) : "Missing") : "No due date"}</span>
 			`
-
 			assignmentsDiv.append(box);
 		}
 		const course = courses.filter(e1 => e1.id === e.assignment.courseId)[0];
@@ -35,6 +34,7 @@ function displayAssignments() {
 		if (dueDateToDate(e.assignment.dueDate,e.assignment.dueTime).getTime() !== 0 && dueDate < new Date()) {
 			box.classList.add("is-missing");
 		}
+		box.style.borderLeftColor = courseColor(course);
 		box.innerHTML = safe`
 			<div class="level">
 				<div class="level-left">
@@ -111,4 +111,9 @@ function refresh() {
 	document.getElementById("refresh-button").classList.add("is-loading");
 	document.getElementById("refresh-button").disabled = true;
 	assignmentsView();
+}
+
+function courseColor(course) {
+	const colorHash = new ColorHash({saturation: .8, lightness: .4});
+	return colorHash.hex(course.id + course.name);
 }

@@ -69,9 +69,12 @@ $primary: #22a565;
 
 #assignments .assignment-box {
 	transition: background-color .4s;
-	&:not(.week-start):hover {
-		background-color: $grey-lighter;
-		cursor: pointer;
+	&:not(.week-start) {
+		border-left: solid 4px white;
+		&:hover {
+			background-color: $grey-lighter;
+			cursor: pointer;
+		}
 	}
 	&.is-missing {
 		a {
