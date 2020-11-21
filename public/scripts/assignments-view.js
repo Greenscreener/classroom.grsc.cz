@@ -6,7 +6,7 @@ function displayAssignments() {
 	for (let i = 0; i < courses.length; i++) {
 		const courseLink = document.createElement("a");
 		courseLink.classList.add("course-link");
-		courseLink.href = courses[i].alternateLink;
+		courseLink.href = courses[i].alternateLink + "?authuser=" + currentUser.email;
 		courseLink.target = "_blank";
 		courseLink.innerText = courses[i].name;
 		courseLink.style.backgroundColor = courseColor(courses[i]);
@@ -50,8 +50,8 @@ function displayAssignments() {
 		box.innerHTML = safe`
 			<div class="level">
 				<div class="level-left">
-					<a class="assignment-title" target="_blank" href="${e.assignment.alternateLink}">${e.assignment.title}</a>
-					<a class="course-name" target="_blank" href="${course.alternateLink}">${course.name}</a>
+					<a class="assignment-title" target="_blank" href="${e.assignment.alternateLink + "?authuser=" + currentUser.email}">${e.assignment.title}</a>
+					<a class="course-name" target="_blank" href="${course.alternateLink + "?authuser=" + currentUser.email}">${course.name}</a>
 				</div>
 				<div class="level-right">
 					<span class="assignment-due-time">
@@ -62,7 +62,7 @@ function displayAssignments() {
 		`;
 		box.addEventListener("click", (event) => {
 			if (event.target.tagName !== "A") {
-				open(e.assignment.alternateLink, "_blank")
+				open(e.assignment.alternateLink + "?authuser=" + currentUser.email, "_blank")
 			}
 		});
 
