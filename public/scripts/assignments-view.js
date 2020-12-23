@@ -20,6 +20,9 @@ function displayAssignments() {
 		const dateB = dueDateToDate(b.assignment.dueDate, b.assignment.dueTime);
 		return dateA-dateB;
 	});
+	if (dueAssignments.length === 0) {
+		assignmentsDiv.innerHTML = `<div class="section has-text-centered"><h1 style="font-weight: normal; font-size: 3rem;">All done!</h1></div>`;
+	}
 	for (let i = 0; i < dueAssignments.length; i++) {
 		const e = dueAssignments[i];
 		const dueDate = dueDateToDate(e.assignment.dueDate,e.assignment.dueTime);
