@@ -26,11 +26,13 @@ function displayAssignments() {
 	for (let i = 0; i < dueAssignments.length; i++) {
 		const e = dueAssignments[i];
 		const dueDate = dueDateToDate(e.assignment.dueDate,e.assignment.dueTime);
+		const prevDueDate = i > 0 ? dueDateToDate(dueAssignments[i-1].assignment.dueDate,dueAssignments[i-1].assignment.dueTime) : null;
+		const startOfTheWeek = getStartOfWeek(dueDate, firstDayOfWeek);
 		if (
 			i === 0 ||
-			(dueDate > new Date() && weekShift(dueDate.getDay(),1) < weekShift(dueDateToDate(dueAssignments[i-1].assignment.dueDate,dueAssignments[i-1].assignment.dueTime).getDay(),1)) ||
-			(dueDateToDate(dueAssignments[i-1].assignment.dueDate,dueAssignments[i-1].assignment.dueTime).getTime() === 0 && dueDate.getTime() !== 0)  ||
-			(dueDateToDate(dueAssignments[i-1].assignment.dueDate,dueAssignments[i-1].assignment.dueTime) < new Date() && dueDate > new Date())
+			(dueDate > new Date() && prevDueDate < startOfTheWeek) ||
+			(prevDueDate.getTime() === 0 && dueDate.getTime() !== 0)  ||
+			(prevDueDate < new Date() && dueDate > new Date())
 		) {
 			const box = document.createElement("div");
 			box.classList.add("assignment-box");
@@ -119,9 +121,21 @@ function weekShift(dayOfWeek, firstDayOfWeek) {
 	return dayOfWeek-firstDayOfWeek < 0 ? 7+(dayOfWeek-firstDayOfWeek) : dayOfWeek-firstDayOfWeek;
 }
 
+function getStartOfWeek(date, firstDayOfWeek) {
+	const startOfWeek = new Date(date.getTime() - weekShift(date.getDay(), firstDayOfWeek)*24*60*60*1000);
+	startOfWeek.setHours(0,0,0,0);
+	return startOfWeek;
+}
+
+function getEndOfWeek(date, firstDayOfWeek) {
+	const endOfWeek = new Date(date.getTime() + (6-weekShift(date.getDay(),firstDayOfWeek))*24*60*60*1000);
+	endOfWeek.setHours(23,59,59,999);
+	return endOfWeek;
+}
+
 function weekHeader(date, firstDayOfWeek) {
-	const firstDayDate = new Date(date.getTime() - weekShift(date.getDay(), firstDayOfWeek)*24*60*60*1000);
-	const lastDayDate = new Date(date.getTime() + (6-weekShift(date.getDay(),firstDayOfWeek))*24*60*60*1000);
+	const firstDayDate = getStartOfWeek(date, firstDayOfWeek);
+	const lastDayDate = getEndOfWeek(date, firstDayOfWeek)
 	return formatDueDateDate(firstDayDate) + " – " + formatDueDateDate(lastDayDate);
 }
 
