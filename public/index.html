@@ -68,7 +68,7 @@
       <nav class="topbar">
         <div class="topbar-left">
           <img class="topbar-logo" src="/img/logo.svg" width="32" alt="">
-          <h1 class="subtitle is-4">Greenscreener's Classroom</h1>
+          <h1 class="subtitle is-4 is-hidden-mobile">Greenscreener's Classroom</h1>
         </div>
         <div class="topbar-right">
           <button class="button is-small" onclick="firebase.auth().signOut()">Log out</button>
@@ -86,11 +86,16 @@
       <!--<script>
         document.addEventListener("DOMContentLoaded", () => document.getElementById("days-since-made").innerText = Math.round((Date.now() - 1605462530215)/(1000*60*60*24)).toString())
       </script>-->
+      <section class="section course-link-section">
         <div class="container">
+          <div class="courses-header">
+            <span class="courses-title">Courses</span> <button onclick="document.getElementById('course-links').classList.toggle('active'); this.classList.toggle('active')" class="button show-hide"></button>
+          </div>
           <div id="course-links">
 
           </div>
         </div>
+      </section>
       <section class="section">
         <div class="container">
           <div class="buttons">
@@ -101,11 +106,11 @@
               <button class="button refresh-buttons" onclick="document.getElementById('hard-refresh-confirm').style.display = 'none'; hardRefresh()">Yes</button>
               <button class="button refresh-buttons" onclick="document.getElementById('hard-refresh-confirm').style.display = 'none'">Cancel</button>
             </span>
-            <button class="button is-white" onclick="document.getElementById('hard-refresh-hint').style.display = 'block'">
+            <button class="button is-white" onclick="document.getElementById('hard-refresh-hint').classList.toggle('active')">
               <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
             </button>
           </div>
-          <div id="hard-refresh-hint" style="display: none">
+          <div id="hard-refresh-hint">
             <p>Because of how the Google Classroom API works, it takes a large amount of requests to check for unfinished assignments. Assignments, which have a) a <strong>due date longer than two weeks in the past</strong> or b) <strong>no due date and have been last updated in longer than a month</strong>, <strong>will not be shown</strong> in this list to save on bandwidth, loading speed and the amount of reqests. This means however, that assignments which are not yet finished can still disappear from the list. </p> <br> <p>If you think you might have some of your assignments hidden by this, use the Long Refresh button. The loading will take much longer than normal, but it will show all unfinished assignments. This is however not permanent, they will be hidden again after a new refresh. The assignments that will be hidden are marked with a red warning sign. </p>
           </div>
         </div>
