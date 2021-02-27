@@ -55,7 +55,10 @@ function displayAssignments() {
 		box.innerHTML = safe`
 			<div class="level">
 				<div class="level-left">
-					<a class="assignment-title" target="_blank" href="${e.assignment.alternateLink + "?authuser=" + currentUser.email}">${e.assignment.title}</a>
+					<a class="assignment-title" target="_blank" href="${e.assignment.alternateLink + "?authuser=" + currentUser.email}">
+						${e.assignment.title}
+						<svg class="not-recent-warning" style="display: ${e.defaultRecent ? "none" : "inline-block"};" xmlns=\"http://www.w3.org/2000/svg\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z\"/></svg>
+					</a>
 					<a class="course-name" target="_blank" href="${course.alternateLink + "?authuser=" + currentUser.email}">${course.name}</a>
 				</div>
 				<div class="level-right">
@@ -75,11 +78,11 @@ function displayAssignments() {
 	}
 }
 
-function assignmentsView() {
-	fetchAssignments().then(() => {
+function assignmentsView(dueTimeLimit, updateTimeLimit) {
+	fetchAssignments(dueTimeLimit, updateTimeLimit).then(() => {
 		displayAssignments();
-		document.getElementById("refresh-button").classList.remove("is-loading");
-		document.getElementById("refresh-button").disabled = false;
+		[...document.getElementsByClassName("refresh-buttons")].forEach(e => e.classList.remove("is-loading"));
+		[...document.getElementsByClassName("refresh-buttons")].forEach(e => e.disabled = false);
 		document.getElementById("welcome").classList.add("hidden");
 		document.getElementById("loading").classList.add("hidden");
 		document.getElementById("app").classList.remove("hidden");
@@ -139,13 +142,17 @@ function weekHeader(date, firstDayOfWeek) {
 	return formatDueDateDate(firstDayDate) + " – " + formatDueDateDate(lastDayDate);
 }
 
-function refresh() {
+function refresh(dueTimeLimit, updateTimeLimit) {
 	if (typeof Cookies.get("googleAuthToken") === "undefined" && firebase.auth().currentUser !== null) {
 		launchAuth(firebase.auth().currentUser.email);
 	}
-	document.getElementById("refresh-button").classList.add("is-loading");
-	document.getElementById("refresh-button").disabled = true;
-	assignmentsView();
+	[...document.getElementsByClassName("refresh-buttons")].forEach(e => e.classList.add("is-loading"));
+	[...document.getElementsByClassName("refresh-buttons")].forEach(e => e.disabled = true);
+	assignmentsView(dueTimeLimit, updateTimeLimit);
+}
+
+function hardRefresh() {
+	refresh(100*365*24*60*60*1000);
 }
 
 function courseColor(course) {

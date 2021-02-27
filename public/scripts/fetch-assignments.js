@@ -3,12 +3,12 @@ let dueAssignments = [];
 // How much requests at a time are we willing to make (since we're nesting it might end up being this number squared)
 const requestLimit = 6;
 // How far (milliseconds) into the past are we willing to search for unfinished assignments by due time (cos the API for this one is almost as shit as the UI)
-const dueTimeLimit = 2*7*24*60*60*1000;
+const defaultDueTimeLimit = 2*7*24*60*60*1000; // 2 weeks
 // How far (milliseconds) into the past are we willing to search for unfinished assignments without a due time by update time. (I hate this)
-const updateTimeLimit = dueTimeLimit*2;
+const defaultUpdateTimeLimit = null; // default is 2*dueTimeLimit
 
 
-function fetchAssignments() {
+function fetchAssignments(dueTimeLimit = defaultDueTimeLimit, updateTimeLimit = defaultUpdateTimeLimit || dueTimeLimit*2) {
 	return new Promise((resolve, reject) => {
 		// Fetch all active courses
 		fetch('https://classroom.googleapis.com/v1/courses?studentId=me&courseStates=ACTIVE&pageSize=100', {
@@ -30,7 +30,7 @@ function fetchAssignments() {
 					if (typeof json.courseWork === "undefined") { callback(); return; }
 					const recentAssignments = json.courseWork.filter(e => {
 						// Determine if the assignment is recent enough to make a request about
-						return (typeof e.dueDate === "undefined" && new Date(e.updateTime) > new Date(Date.now()-updateTimeLimit)) || dueDateToDate(e.dueDate, e.dueTime) > new Date(Date.now()-dueTimeLimit);
+						return isRecent(e, dueTimeLimit, updateTimeLimit);
 					});
 					async.eachLimit(recentAssignments, requestLimit, (assignment,callback) => {
 						debugRequests++;
@@ -44,7 +44,7 @@ function fetchAssignments() {
 							} else {
 								response.json().then(json => {
 									if (["TURNED_IN","RETURNED"].indexOf(json.studentSubmissions[0].state) === -1) {
-										dueAssignments.push({assignment: assignment, submission: json.studentSubmissions[0]});
+										dueAssignments.push({assignment: assignment, submission: json.studentSubmissions[0], defaultRecent: isRecent(assignment, defaultDueTimeLimit, defaultUpdateTimeLimit)});
 									}
 									callback();
 								});
@@ -52,7 +52,7 @@ function fetchAssignments() {
 						})
 					}).then(() => callback())
 				});
-			}).then(() => { console.log(debugRequests); resolve() });
+			}).then(() => { console.log("Number of requests made: ", debugRequests); resolve() });
 		});
 	});
 }
@@ -72,4 +72,8 @@ function zeropad(strings, ...inputs) {
 	}
 	output+=strings[strings.length-1];
 	return output;
+}
+
+function isRecent(e, dueTimeLimit, updateTimeLimit) {
+	return (typeof e.dueDate === "undefined" && new Date(e.updateTime) > new Date(Date.now()-updateTimeLimit)) || dueDateToDate(e.dueDate, e.dueTime) > new Date(Date.now()-dueTimeLimit);
 }
