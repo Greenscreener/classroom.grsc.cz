@@ -5,10 +5,10 @@ const requestLimit = 6;
 // How far (milliseconds) into the past are we willing to search for unfinished assignments by due time (cos the API for this one is almost as shit as the UI)
 const defaultDueTimeLimit = 2*7*24*60*60*1000; // 2 weeks
 // How far (milliseconds) into the past are we willing to search for unfinished assignments without a due time by update time. (I hate this)
-const defaultUpdateTimeLimit = null; // default is 2*dueTimeLimit
+const defaultUpdateTimeLimit = undefined; // default is 2*dueTimeLimit
 
 
-function fetchAssignments(dueTimeLimit = defaultDueTimeLimit, updateTimeLimit = defaultUpdateTimeLimit || dueTimeLimit*2) {
+function fetchAssignments(dueTimeLimit = defaultDueTimeLimit, updateTimeLimit = defaultUpdateTimeLimit) {
 	return new Promise((resolve, reject) => {
 		// Fetch all active courses
 		fetch('https://classroom.googleapis.com/v1/courses?studentId=me&courseStates=ACTIVE&pageSize=100', {
@@ -74,6 +74,7 @@ function zeropad(strings, ...inputs) {
 	return output;
 }
 
-function isRecent(e, dueTimeLimit, updateTimeLimit) {
+function isRecent(e, dueTimeLimit, updateTimeLimit= dueTimeLimit*2) {
+	console.log(updateTimeLimit);
 	return (typeof e.dueDate === "undefined" && new Date(e.updateTime) > new Date(Date.now()-updateTimeLimit)) || dueDateToDate(e.dueDate, e.dueTime) > new Date(Date.now()-dueTimeLimit);
 }
